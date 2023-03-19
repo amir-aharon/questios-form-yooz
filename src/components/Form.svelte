@@ -15,7 +15,7 @@
         { questionLimit: 70, answerLimit: 55, name: "טריוויה"},
         { questionLimit: 23, answerLimit: 0, name: "נכון/לא נכון" },
     ];
-    let selectedOption = options[selectedOptionIndex];
+    let selectedOption = selectedOptionIndex == -1 ? options[0] : options[selectedOptionIndex];
 
     let questionRemaining = selectedOption.questionLimit;
     let answerRemaining = selectedOption.answerLimit;
@@ -117,9 +117,6 @@
       margin-top: 1rem;
     }
   </style>
-
-
-
 
   <div class="form-container">
 
