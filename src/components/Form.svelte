@@ -8,7 +8,7 @@
     let answer = "";
     const formStatus = writable("");
 
-    let selectedOptionIndex = 0;
+    let selectedOptionIndex = -1;
     const options = [
         { questionLimit: 85, answerLimit: 40, name: "פאזל טריוויה" },
         { questionLimit: 50, answerLimit: 40, name: "משחק הכדורים" },
@@ -119,6 +119,8 @@
   </style>
 
 
+
+
   <div class="form-container">
 
     <select bind:value={selectedOptionIndex} on:change={handleOptionChange}>
@@ -127,6 +129,8 @@
         <option value="2" dir="rtl">טריוויה</option>
         <option value="3" dir="rtl">נכון/לא נכון</option>
       </select>
+
+      {#if selectedOptionIndex > -1}
 
     <form on:submit|preventDefault={submitForm}>
         <label for="question">נשארו {questionRemaining} תווים</label>
@@ -140,5 +144,6 @@
 
     {#if $formStatus}
       <p>{$formStatus}</p>
+    {/if}
     {/if}
   </div>
