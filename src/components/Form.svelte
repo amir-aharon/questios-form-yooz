@@ -76,6 +76,11 @@
     width: 20%;
   }
 
+  ::selection {
+		color: #6b15a1;
+		background: #f5f5f5;
+	}
+
   textarea {
     background-color: #f5f5f5;
     border: 1px solid #e9e9f4;
@@ -127,9 +132,20 @@
     margin-top: 1rem;
   }
 
+  h2 {
+	  color: #e9e9f4;
+    margin-top: -.5rem;
+	}
+
 </style>
 
 <div class="form-container">
+
+  {#if selectedOptionIndex <= -1}
+
+    <h2>בחרו משחק אליו תרצו ליצור שאלות</h2>
+
+  {/if}
 
   <select bind:value={selectedOptionIndex} on:change={handleOptionChange}>
     <option value="0" dir="rtl">פאזל טריוויה</option>
