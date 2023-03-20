@@ -1,6 +1,7 @@
 <!-- src/App.svelte -->
 <script>
 	import Form from "./components/Form.svelte";
+	let src = "./images/logo.jpg"
 </script>
 
 <style>
@@ -24,9 +25,20 @@
 		margin-bottom: 1rem;
 	}
 
+	img {
+		background-color: #ffffff;
+		padding: 2rem;
+		position: absolute;
+		left: -9rem;
+		bottom: -5rem;
+		transform: scale(0.5);
+		border-radius: 2rem;
+	}
+
 </style>
 
 <main>
 	<h1>שאלות ותשובות למשחקים</h1>
 	<Form />
+	<img src={src} alt="Yooz Logo">
 </main>
