@@ -229,7 +229,7 @@
         type="text"
         id="falseAnswer1"
         bind:value="{falseAnswer1}"
-        placeholder="תשובה שגויה 1"
+        placeholder="תשובה שגויה"
         required
         dir="rtl"
         maxlength="{selectedOption.answerLimit}"
