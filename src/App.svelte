@@ -12,13 +12,14 @@
 	}
 
 	main {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		height: 100vh;
-		justify-content: center;
-		background-color: #6b15a1;
-	}
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    justify-content: center;
+    background-color: #6b15a1;
+    padding: 1rem;
+  }
 
 	h1 {
 		color: #e9e9f4;
@@ -29,10 +30,10 @@
 		background-color: #ffffff;
 		padding: 2rem;
 		position: absolute;
-		left: -9rem;
-		bottom: -5rem;
-		transform: scale(0.5);
-		border-radius: 2rem;
+		left: 1rem;
+		top: 1rem;
+		width: 8rem;
+		border-radius: 1rem;
 	}
 
 </style>

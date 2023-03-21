@@ -6,11 +6,15 @@
 
   let question = "";
   let answer = "";
+  let falseAnswer1 = "";
+  let falseAnswer2 = "";
+  let falseAnswer3 = "";
+
   const formStatus = writable("");
 
   let selectedOptionIndex = -1;
   const options = [
-    { questionLimit: 85, answerLimit: 40, name: "פאזל טריוויה" },
+    { questionLimit: 85, answerLimit: 40, name: "פאזל טריוויה"},
     { questionLimit: 50, answerLimit: 40, name: "משחק הכדורים" },
     { questionLimit: 70, answerLimit: 55, name: "טריוויה"},
     { questionLimit: 23, answerLimit: 0, name: "נכון/לא נכון" },
@@ -20,6 +24,11 @@
   let questionRemaining = selectedOption.questionLimit;
   let answerRemaining = selectedOption.answerLimit;
 
+  let falseAnswer1Remaining = selectedOption.answerLimit;
+  let falseAnswer2Remaining = selectedOption.answerLimit;
+  let falseAnswer3Remaining = selectedOption.answerLimit;
+
+
   function updateQuestionRemaining() {
     questionRemaining = selectedOption.questionLimit - question.length;
   }
@@ -27,6 +36,19 @@
   function updateAnswerRemaining() {
     answerRemaining = selectedOption.answerLimit - answer.length;
   }
+
+  function updateFalseAnswer1Remaining() {
+    falseAnswer1Remaining = selectedOption.answerLimit - falseAnswer1.length;
+  }
+
+  function updateFalseAnswer2Remaining() {
+    falseAnswer2Remaining = selectedOption.answerLimit - falseAnswer2.length;
+  }
+
+  function updateFalseAnswer3Remaining() {
+    falseAnswer3Remaining = selectedOption.answerLimit - falseAnswer3.length;
+  }
+
 
   async function submitForm() {
     if (question.length === 0 || (selectedOption.answerLimit === 0 && !answer) || (selectedOption.answerLimit > 0 && answer.length === 0)) {
@@ -39,9 +61,20 @@
         question,
         answer,
         game: selectedOption.name,
+        falseAnswers: selectedOptionIndex === 3 ? [] : [falseAnswer1, falseAnswer2, ...(selectedOptionIndex === 0 ? [] : [falseAnswer3])],
       });
       question = "";
       answer = "";
+      falseAnswer1 = "";
+      falseAnswer2 = "";
+      falseAnswer3 = "";
+
+      questionRemaining = selectedOption.questionLimit;
+      answerRemaining = selectedOption.answerLimit;
+
+      falseAnswer1Remaining = selectedOption.answerLimit;
+      falseAnswer2Remaining = selectedOption.answerLimit;
+      falseAnswer3Remaining = selectedOption.answerLimit;
     } catch (e) {
       console.error("Error adding document: ", e);
     }
@@ -52,8 +85,14 @@
     selectedOption = options[selectedOptionIndex];
     updateAnswerRemaining();
     updateQuestionRemaining();
+    updateFalseAnswer1Remaining();
+    updateFalseAnswer2Remaining();
+    updateFalseAnswer3Remaining();
     question = "";
     answer = "";
+    falseAnswer1 = "";
+    falseAnswer2 = "";
+    falseAnswer3 = "";
   }
 
   </script>
@@ -109,6 +148,7 @@
     display:block;
     width:x;
     height:y;
+    transform: translateY(10px);
     text-align:right;
     color:
     #e9e9f4;
@@ -140,14 +180,11 @@
 </style>
 
 <div class="form-container">
-
   {#if selectedOptionIndex <= -1}
-
     <h2>בחרו משחק אליו תרצו ליצור שאלות</h2>
-
   {/if}
 
-  <select bind:value={selectedOptionIndex} on:change={handleOptionChange}>
+  <select bind:value="{selectedOptionIndex}" on:change="{handleOptionChange}">
     <option value="0" dir="rtl">פאזל טריוויה</option>
     <option value="1" dir="rtl">משחק הכדורים</option>
     <option value="2" dir="rtl">טריוויה</option>
@@ -155,39 +192,101 @@
   </select>
 
   {#if selectedOptionIndex > -1}
-
-  <form on:submit|preventDefault={submitForm}>
-
+  <form on:submit|preventDefault="{submitForm}">
     <label for="question">נשארו {questionRemaining} תווים</label>
-    <textarea type="text" id="question" bind:value={question} placeholder="שאלה" required dir="rtl" maxlength={selectedOption.questionLimit} rows="2" on:input={updateQuestionRemaining}/>
+    <textarea
+      type="text"
+      id="question"
+      bind:value="{question}"
+      placeholder="שאלה"
+      required
+      dir="rtl"
+      maxlength="{selectedOption.questionLimit}"
+      rows="2"
+      on:input="{updateQuestionRemaining}"
+    />
 
-    {#if selectedOption.answerLimit > 0}
 
-    <label for="question">נשארו {answerRemaining} תווים</label>
-    <textarea type="text" id="answer" bind:value={answer} placeholder="תשובה" required dir="rtl" maxlength={selectedOption.answerLimit} rows="2" on:input={updateAnswerRemaining} disabled={selectedOption.answerLimit === 0}/>
+
+    {#if selectedOptionIndex != 3}
+
+      <label for="answer">נשארו {answerRemaining} תווים</label>
+      <textarea
+        type="text"
+        id="answer"
+        bind:value="{answer}"
+        placeholder="תשובה נכונה"
+        required
+        dir="rtl"
+        maxlength="{selectedOption.answerLimit}"
+        rows="2"
+        on:input="{updateAnswerRemaining}"
+        disabled="{selectedOption.answerLimit === 0}"
+      />
+
+      <label for="falseAnswer1">נשארו {falseAnswer1Remaining} תווים</label>
+      <textarea
+        type="text"
+        id="falseAnswer1"
+        bind:value="{falseAnswer1}"
+        placeholder="תשובה שגויה 1"
+        required
+        dir="rtl"
+        maxlength="{selectedOption.answerLimit}"
+        rows="2"
+        on:input="{updateFalseAnswer1Remaining}"
+      />
+
+      <label for="falseAnswer2"> נשארו {falseAnswer2Remaining} תווים</label>
+      <textarea
+        type="text"
+        id="falseAnswer2"
+        bind:value="{falseAnswer2}"
+        placeholder="תשובה שגויה"
+        required
+        dir="rtl"
+        maxlength="{selectedOption.answerLimit}"
+        rows="2"
+        on:input="{updateFalseAnswer2Remaining}"
+      />
+
+      {#if selectedOptionIndex != 0}
+      <label for="falseAnswer3">נשארו {falseAnswer3Remaining} תווים</label>
+      <textarea
+        type="text"
+        id="falseAnswer3"
+        bind:value="{falseAnswer3}"
+        placeholder="תשובה שגויה"
+        required
+        dir="rtl"
+        maxlength="{selectedOption.answerLimit}"
+        rows="2"
+        on:input="{updateFalseAnswer3Remaining}"
+      />
+    {/if}
 
     {:else}
 
     <div class="radio-container">
       <label>
         נכון
-        <input type="radio" bind:group={answer} value="נכון" required>
+        <input type="radio" bind:group="{answer}" value="נכון" required>
       </label>
       <label>
         לא נכון
-        <input type="radio" bind:group={answer} value="לא נכון" required>
+        <input type="radio" bind:group="{answer}" value="לא נכון" required>
       </label>
     </div>
 
-    {/if}
+  {/if}
 
-    <button type="submit">Submit</button>
+  <button type="submit">Submit</button>
 
   </form>
 
-  {#if $formStatus}
-    <p>{$formStatus}</p>
-  {/if}
+    {#if $formStatus}
+      <p>{$formStatus}</p>
+    {/if}
 
   {/if}
-</div>
+  </div>
