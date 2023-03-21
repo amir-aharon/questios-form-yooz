@@ -142,6 +142,7 @@
     font-family: inherit;
     width: 20%;
     margin-bottom: 1rem;
+    outline: none;
   }
 
   label {
@@ -193,7 +194,7 @@
 
   {#if selectedOptionIndex > -1}
   <form on:submit|preventDefault="{submitForm}">
-    <label for="question">נשארו {questionRemaining} תווים</label>
+    <label for="question"><b>שאלה</b> (נשארו {questionRemaining} תווים)</label>
     <textarea
       type="text"
       id="question"
@@ -210,7 +211,7 @@
 
     {#if selectedOptionIndex != 3}
 
-      <label for="answer">נשארו {answerRemaining} תווים</label>
+      <label for="answer"><b>תשובה נכונה</b> (נשארו {answerRemaining} תווים)</label>
       <textarea
         type="text"
         id="answer"
@@ -224,7 +225,7 @@
         disabled="{selectedOption.answerLimit === 0}"
       />
 
-      <label for="falseAnswer1">נשארו {falseAnswer1Remaining} תווים</label>
+      <label for="falseAnswer1"> <b>תשובה שגויה</b> (נשארו {falseAnswer1Remaining} תווים)</label>
       <textarea
         type="text"
         id="falseAnswer1"
@@ -237,7 +238,7 @@
         on:input="{updateFalseAnswer1Remaining}"
       />
 
-      <label for="falseAnswer2"> נשארו {falseAnswer2Remaining} תווים</label>
+      <label for="falseAnswer2"> <b>תשובה שגויה</b> (נשארו {falseAnswer2Remaining} תווים)</label>
       <textarea
         type="text"
         id="falseAnswer2"
@@ -251,7 +252,7 @@
       />
 
       {#if selectedOptionIndex != 0}
-      <label for="falseAnswer3">נשארו {falseAnswer3Remaining} תווים</label>
+      <label for="falseAnswer3"> <b>תשובה שגויה</b> (נשארו {falseAnswer3Remaining} תווים)</label>
       <textarea
         type="text"
         id="falseAnswer3"
@@ -280,7 +281,8 @@
 
   {/if}
 
-  <button type="submit">Submit</button>
+  <button type="submit">שלח
+  </button>
 
   </form>
 
