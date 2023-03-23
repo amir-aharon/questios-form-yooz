@@ -143,6 +143,7 @@
     width: 20%;
     margin-bottom: 1rem;
     outline: none;
+    cursor: pointer;
   }
 
   label {
@@ -153,6 +154,7 @@
     text-align:right;
     color:
     #e9e9f4;
+    cursor: text;
   }
 
   button {

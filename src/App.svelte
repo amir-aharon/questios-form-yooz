@@ -1,6 +1,6 @@
 <!-- src/App.svelte -->
 <script>
-	import Form from "./components/Form.svelte";
+	import QuestionForm from "./components/QuestionForm.svelte";
 	let src = "./images/logo.jpg"
 </script>
 
@@ -40,6 +40,6 @@
 
 <main>
 	<h1>שאלות ותשובות למשחקים</h1>
-	<Form />
+	<QuestionForm />
 	<img src={src} alt="Yooz Logo">
 </main>
