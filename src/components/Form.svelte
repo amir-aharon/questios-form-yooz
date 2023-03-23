@@ -178,8 +178,11 @@
     margin-top: -.5rem;
 	}
 
-</style>
+  .radio-container {
+    margin-bottom: 1rem
+  }
 
+</style>
 <div class="form-container">
   {#if selectedOptionIndex <= -1}
     <h2>בחרו משחק אליו תרצו ליצור שאלות</h2>
@@ -269,9 +272,10 @@
     {:else}
 
     <div class="radio-container">
+      <label for="_"><b>תשובה</b></label>
       <label>
         נכון
-        <input type="radio" bind:group="{answer}" value="נכון" required>
+        <input id="_" type="radio" bind:group="{answer}" value="נכון" required>
       </label>
       <label>
         לא נכון
