@@ -2,7 +2,11 @@
 <script>
   import { writable } from "svelte/store";
   import db from "../firebase";
-  import { collection, addDoc } from "firebase/firestore";
+  import { collection, addDoc, arrayUnion, doc, updateDoc  } from "firebase/firestore";
+
+
+  export let gameID;
+  const gameRef = doc(db, "games", gameID)
 
   let question = "";
   let answer = "";
@@ -57,12 +61,23 @@
     }
 
     try {
-      const docRef = await addDoc(collection(db, "questions"), {
+      const questionRef = await addDoc(collection(db, "questions"), {
         question,
         answer,
-        game: selectedOption.name,
+        type: selectedOption.name,
         falseAnswers: selectedOptionIndex === 3 ? [] : [falseAnswer1, falseAnswer2, ...(selectedOptionIndex === 0 ? [] : [falseAnswer3])],
       });
+
+      await updateDoc(gameRef, {
+        questions: arrayUnion({
+        question,
+        answer,
+        type: selectedOption.name,
+        falseAnswers: selectedOptionIndex === 3 ? [] : [falseAnswer1, falseAnswer2, ...(selectedOptionIndex === 0 ? [] : [falseAnswer3])],
+        questionRef: questionRef
+      })
+      });
+
       question = "";
       answer = "";
       falseAnswer1 = "";
