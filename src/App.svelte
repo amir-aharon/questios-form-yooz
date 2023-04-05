@@ -107,7 +107,7 @@
 
 	{/if}
 	{#if showForm}
-			<QuestionForm {gameID} />
+			<QuestionForm {gameID} {selectedOptionIndex} />
 	{/if}
 	<img src={src} alt="Yooz Logo" />
 </main>

@@ -4,9 +4,11 @@
   import db from "../firebase";
   import { collection, addDoc, arrayUnion, doc, updateDoc  } from "firebase/firestore";
 
-
   export let gameID;
+  export let selectedOptionIndex;
+
   const gameRef = doc(db, "games", gameID)
+  let questionNumber = 1
 
   let question = "";
   let answer = "";
@@ -16,7 +18,6 @@
 
   const formStatus = writable("");
 
-  let selectedOptionIndex = -1;
   const options = [
     { questionLimit: 85, answerLimit: 40, name: "פאזל טריוויה"},
     { questionLimit: 50, answerLimit: 40, name: "משחק הכדורים" },
@@ -70,13 +71,15 @@
 
       await updateDoc(gameRef, {
         questions: arrayUnion({
-        question,
-        answer,
-        type: selectedOption.name,
-        falseAnswers: selectedOptionIndex === 3 ? [] : [falseAnswer1, falseAnswer2, ...(selectedOptionIndex === 0 ? [] : [falseAnswer3])],
-        questionRef: questionRef
-      })
+          question,
+          answer,
+          type: selectedOption.name,
+          falseAnswers: selectedOptionIndex === 3 ? [] : [falseAnswer1, falseAnswer2, ...(selectedOptionIndex === 0 ? [] : [falseAnswer3])],
+          questionRef: questionRef
+        })
       });
+
+      questionNumber++;
 
       question = "";
       answer = "";
@@ -90,6 +93,11 @@
       falseAnswer1Remaining = selectedOption.answerLimit;
       falseAnswer2Remaining = selectedOption.answerLimit;
       falseAnswer3Remaining = selectedOption.answerLimit;
+
+      if ((selectedOptionIndex == 0 && questionNumber > 12) || (selectedOptionIndex == 1 && questionNumber > 10)) {
+        alert("מילאתם את כל השאלות למשחק");
+        location.reload();
+      }
     } catch (e) {
       console.error("Error adding document: ", e);
     }
@@ -172,6 +180,18 @@
     cursor: text;
   }
 
+  .limit-message {
+    display:block;
+    width:x;
+    height:y;
+    font-weight: bolder;
+    transform: translateY(10px);
+    text-align:right;
+    color:
+    #e9e9f4;
+    cursor: text;
+  }
+
   button {
     background-color: #e9e9f4;
     border: 1px solid #e9e9f4;
@@ -201,20 +221,12 @@
 
 </style>
 <div class="form-container">
-  {#if selectedOptionIndex <= -1}
-    <h2>בחרו משחק אליו תרצו ליצור שאלות</h2>
-  {/if}
 
-  <select bind:value="{selectedOptionIndex}" on:change="{handleOptionChange}">
-    <option value="0" dir="rtl">פאזל טריוויה</option>
-    <option value="1" dir="rtl">משחק הכדורים</option>
-    <option value="2" dir="rtl">טריוויה</option>
-    <option value="3" dir="rtl">נכון/לא נכון</option>
-  </select>
+  <div class="limit-message">שאלה {questionNumber} {selectedOptionIndex == 0 ? "מתוך 12 (צריך בדיוק 12)" : selectedOptionIndex == 1 ? "מתוך 10 (צריך לפחות 3)" : ""}</div>
 
   {#if selectedOptionIndex > -1}
   <form on:submit|preventDefault="{submitForm}">
-    <label for="question"><b>שאלה</b> (נשארו {questionRemaining} תווים)</label>
+    <label for="question"><b>שאלה </b> (נשארו {questionRemaining} תווים)</label>
     <textarea
       type="text"
       id="question"
@@ -226,8 +238,6 @@
       rows="2"
       on:input="{updateQuestionRemaining}"
     />
-
-
 
     {#if selectedOptionIndex != 3}
 
@@ -312,4 +322,4 @@
     {/if}
 
   {/if}
-  </div>
+</div>
