@@ -26,7 +26,6 @@
     selectedOption = options[selectedOptionIndex];
 		if (selectedOptionIndex === 100)
 			selectedOption = null;
-
 	}
 
 	async function createNewGame() {
@@ -71,9 +70,46 @@
 			padding: 1rem;
 	}
 
-	h1 {
+	.title {
 			color: #e9e9f4;
 			margin-bottom: 1rem;
+			text-align: center;
+	}
+
+	.title:hover {
+		transform: skew(-5deg);
+	}
+
+	.insert-name {
+		width: 12rem;
+		border-radius: .5rem;
+	}
+
+	.insert-name:hover {
+		background-color: #f6f6f6;
+	}
+
+	.opt-menu {
+		width: 12rem;
+		border-radius: .5rem;
+	}
+
+	.opt-menu:hover {
+		background-color: #f6f6f6;
+	}
+
+	.btn-next {
+		margin-top: .5rem;
+		width: 12rem;
+		height: 3rem;
+		background-color: #ffffff;
+		border-color: #eeeeee;
+		border-radius: 1.5rem;
+		cursor: pointer;
+	}
+
+	.btn-next:hover {
+		background-color: #eee;
 	}
 
 	img {
@@ -89,13 +125,13 @@
 </style>
 
 <main>
-	<h1>שאלות ותשובות למשחקים</h1>
+	<h1 class="title">שאלות ותשובות למשחקים</h1>
 	{#if !showForm}
 			<div>
-					<input type="text" id="companyName" bind:value={companyName} dir="rtl" placeholder="שם החברה"/>
+					<input type="text" id="companyName" class="insert-name" bind:value={companyName} dir="rtl" placeholder="שם החברה"/>
 			</div>
 			<div>
-				<select id="gameType" bind:value="{selectedOptionIndex}" on:change="{handleOptionChange}">
+				<select id="gameType" class="opt-menu" bind:value="{selectedOptionIndex}" on:change="{handleOptionChange}">
 					<option value="100" dir="rtl" disabled selected>בחרו משחק</option>
 					<option value="0" dir="rtl">פאזל טריוויה</option>
 					<option value="1" dir="rtl">משחק הכדורים</option>
@@ -103,7 +139,7 @@
 					<option value="3" dir="rtl">נכון/לא נכון</option>
 				</select>
 			</div>
-			<button type="button" on:click="{createNewGame}">הבא</button>
+			<button type="button" on:click="{createNewGame}" class="btn-next">הבא</button>
 
 	{/if}
 	{#if showForm}
